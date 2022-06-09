@@ -17,5 +17,6 @@
           <!-- partial -->
        @include('admin.script')
     <!-- End custom js for this page -->
+       @include('admin.footer')
   </body>
 </html>

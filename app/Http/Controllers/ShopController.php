@@ -15,8 +15,7 @@ class ShopController extends Controller
     public function index()
     {
 
-        $user = User::where('phone', '=')->first();
-
+        $user = User::where('id', '=')->first();
         if (!Auth::id()) {
             if(request()->categories){
                 $title= 'Categorie';
@@ -33,7 +32,7 @@ class ShopController extends Controller
 
         elseif(request()->categories){
             $user=auth()->user();
-            $count=cart::where('phone',$user->phone)->count();
+            $count=cart::where('user_id',$user->id)->count();
             $title= 'Categorie';
             $products = Product::with('categories')->whereHas('categories', function($query){
                 $query->where('slug',request()->categories);
@@ -41,7 +40,7 @@ class ShopController extends Controller
         }
         else{
             $user=auth()->user();
-            $count=cart::where('phone',$user->phone)->count();
+            $count=cart::where('user_id',$user->id)->count();
             $title = 'Tout';
             $products = Product::with('categories')->paginate(6);
         }
@@ -63,7 +62,7 @@ class ShopController extends Controller
 
             $user=auth()->user();
 
-            $count=cart::where('phone',$user->phone)->count();
+            $count=cart::where('user_id',$user->id)->count();
 
             $product = Product::where('slug', $slug)->firstOrFail();
 

@@ -12,7 +12,7 @@ button, select {
 }
 
 button, input, select, textarea {
-  color: #000000;
+  color: #000000 ;
   font: inherit;
   margin: 0;
 }
@@ -58,7 +58,7 @@ h1 {
 
 .icon {
   display: block;
-  fill: #474544;
+  fill: #eae6e4;
   height: 50px;
   margin: 0 auto;
   width: 50px;
@@ -224,7 +224,7 @@ textarea {
         @include('admin.navbar')
 
         <!-- partial -->
-        <div class="main-panel">
+        <div style="background-color: rgb(0, 0, 0)" class="main-panel">
             <h1 style="font-size:25px" class="text-center mt-5">Un problème ?</h1>
             <p class="text-center mb-4">Contacter moi !</p>
 
@@ -258,18 +258,12 @@ textarea {
                     <input  type="submit" value="Envoyer message" id="form_button" />
                   </div>
                 </form><!-- // End form -->
-
+        </div>
              <!-- content-wrapper ends -->
-             <!-- partial:partials/_footer -->
-             <footer class="footer">
-               <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                 <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © M&M 2022</span>
-                 <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Designer : Michael Mas</span>
-               </div>
-             </footer>
           <!-- partial -->
        @include('admin.script')
     <!-- End custom js for this page -->
 </div><!-- // End #container -->
+@include('admin.footer')
   </body>
 </html>

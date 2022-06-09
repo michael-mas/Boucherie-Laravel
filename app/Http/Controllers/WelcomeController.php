@@ -21,7 +21,7 @@ class WelcomeController extends Controller
         else{
 
             $user=auth()->user();
-            $count=cart::where('phone',$user->phone)->count();
+            $count=cart::where('user_id',$user->id)->count();
             $recipes = Recipe::orderBy('created_at')->simplePaginate(60);
             return view('recipes.welcome', compact('count'))->with('recipes', $recipes);
             }

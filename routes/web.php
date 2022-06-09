@@ -36,9 +36,15 @@ Route::middleware([
     })->name('dashboard');
 });
 
+    //redirection
+
     route::get('/redirect', [HomeController::class,'redirect']);
 
+    //page d'accueil
+
     route::get('/', [HomeController::class,'index']);
+
+    //Pages admnistrateur
 
     route::get('/product', [AdminController::class,'product']);
 
@@ -52,15 +58,22 @@ Route::middleware([
 
     route::post('/update_product_confirm/{id}', [AdminController::class,'update_product_confirm']);
 
-    route::get('/product_details/{id}', [HomeController::class,'product_details']);
-
     route::get('/view_category', [AdminController::class,'view_category']);
 
     route::post('/add_category', [AdminController::class,'add_category']);
 
     route::get('/delete_category/{id}', [AdminController::class,'delete_category']);
 
+    route::get('/order', [AdminController::class,'order']);
+
+    route::get('/delivered/{id}', [AdminController::class,'delivered']);
+
     route::get('/contact_me', [AdminController::class,'contact_me']);
+
+
+    //Autres pages de l'accueil
+
+    route::get('/product_details/{id}', [HomeController::class,'product_details']);
 
     route::post('/add_cart/{id}', [HomeController::class,'add_cart']);
 
@@ -71,39 +84,52 @@ Route::middleware([
     route::post('/order', [HomeController::class,'confirmorder']);
 
     route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+
     route::get('/shop/{slug}', [ShopController::class, 'show'])->name('shop.show');
 
+    route::get('/nous', [NousController::class,'index'])->name('nous.index');
+
+    // Paiement Paypal
 
     route::get('/paiement', [CheckoutController::class,'index'])->name('checkout.index');
 
+    Route::get('handle-payment', [PayPalPaymentController::class,'handlePayment'])->name('make.payment');
 
-Route::get('handle-payment', [PayPalPaymentController::class,'handlePayment'])->name('make.payment');
-Route::get('cancel-payment', [PayPalPaymentController::class,'paymentCancel'])->name('cancel.payment');
-Route::get('payment-success', [PayPalPaymentController::class,'paymentSuccess'])->name('success.payment');
+    Route::get('cancel-payment', [PayPalPaymentController::class,'paymentCancel'])->name('cancel.payment');
 
-route::get('/nous', [NousController::class,'index'])->name('nous.index');
+    Route::get('payment-success', [PayPalPaymentController::class,'paymentSuccess'])->name('success.payment');
 
+    //Paiement Stripe
 
-// Index recipe
-Route::get('/recipesWelcome', [WelcomeController::class, 'index']);
+    Route::get('/stripe/{sum}', [HomeController::class,'stripe'])->name('user.stripe');
 
-
-// User Routes for recipe
-Route::get('/user/{name}', [UserController::class, 'show']);
-
-// Dashboard routes user
-Route::get('/dashboardUser', [DashboardController::class, 'show'])->name('dashboard.dashboard');;
-Route::post('/dashboardUser', [DashboardController::class, 'update']);
-
-// Recipe routes
-Route::resource('recipe', RecipesController::class);
-Route::get('/search', [RecipesController::class, 'index']);
+    Route::post('stripe/{sum}', [HomeController::class,'stripePost'], 'stripePost')->name('stripe.post');
 
 
-    // Les autres routes avant
+    // Index recette
 
-// Méthode fallback() en dernière position pour la page 404
-Route::fallback(function() {
-    return view('404'); // la vue 404.blade.php
- });
+    Route::get('/recipesWelcome', [WelcomeController::class, 'index']);
+
+
+    // Routes utilisateur pour les recettes
+
+    Route::get('/user/{name}', [UserController::class, 'show']);
+
+    // Dashboard routes utilisateur
+    Route::get('/dashboardUser', [DashboardController::class, 'show'])->name('dashboard.dashboard');;
+
+    Route::post('/dashboardUser', [DashboardController::class, 'update']);
+
+    // Routes recettes
+    Route::resource('recipe', RecipesController::class);
+
+    Route::get('/search', [RecipesController::class, 'index']);
+
+
+        // Les autres routes avant
+
+    // Méthode fallback() en dernière position pour la page 404
+    Route::fallback(function() {
+        return view('404'); // la vue 404.blade.php
+    });
 

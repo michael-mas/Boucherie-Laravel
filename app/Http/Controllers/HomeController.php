@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Auth;
 
+use Session;
+
+use Stripe;
+
 
 class HomeController extends Controller
 {
@@ -33,7 +37,7 @@ class HomeController extends Controller
 
             $user=auth()->user();
 
-            $count=cart::where('phone',$user->phone)->count();
+            $count=cart::where('user_id',$user->id)->count();
 
             return view('user.home',compact('data','count'));
        }
@@ -60,7 +64,7 @@ $product=product::find($id);
 if(Auth::id()){
 $user=auth()->user();
 
-$count=cart::where('phone',$user->phone)->count();
+$count=cart::where('user_id',$user->id)->count();
 
         return view('user.product_details', compact('product', 'count'));
     }
@@ -133,9 +137,9 @@ else{
 
         $user=auth()->user();
 
-        $cart=cart::where('phone',$user->phone)->get();
+        $cart=cart::where('user_id',$user->id)->get();
 
-        $count=cart::where('phone',$user->phone)->count();
+        $count=cart::where('user_id',$user->id)->count();
 
         return view('user.showcart',compact('count', 'cart'));
     }
@@ -151,44 +155,109 @@ else{
 
     public function confirmorder(Request $request){
 
-        $user=auth()->user();
+        $user=Auth::user();
 
-        $name=$user->name;
-
-        $phone=$user->phone;
-
-        $address=$user->address;
+        $userid=$user->id;
+        $data=cart::where('user_id','=',$userid)->get();
 
 
-        foreach($request->productname as $key=>$productname)
+        foreach($data as $data)
 {
     $order=new order;
 
-    $order->product_name=$request->productname[$key];
+    $order->name=$data->name;
 
-    $order->price=$request->price[$key];
+    $order->phone=$data->phone;
 
-    $order->quantity=$request->quantity[$key];
+    $order->address=$data->address;
 
-    $order->name=$name;
 
-    $order->phone=$phone;
 
-    $order->address=$address;
+    $order->product_name=$data->product_title;
 
-    $order->status="non receptionné";
+    $order->price=$data->price;
 
+    $order->quantity=$data->quantity;
+
+    $order->status='non receptionné et payé';
 
     $order->save();
+
+
+    $cart_id=$data->id;
+
+    $cart=cart::find($cart_id);
+
+    $cart->delete();
 }
-
-
-
-
-    DB::table('carts')->where('phone',$phone)->delete();
 
     return redirect()->back()->with('message', 'Commande envoyé!');
 
+    }
+
+
+    public function stripe($sum){
+
+        $user=auth()->user();
+
+        $cart=cart::where('user_id',$user->id)->get();
+
+        $count=cart::where('user_id',$user->id)->count();
+
+        return view('user.stripe', compact('sum','count'));
+    }
+
+
+    public function stripePost(Request $request, $sum)
+    {
+        Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        Stripe\Charge::create ([
+                "amount" => $sum * 100,
+                "currency" => "eur",
+                "source" => $request->stripeToken,
+                "description" => "La boucherie du marché vous remercie pour votre paiement"
+        ]);
+
+        $user=Auth::user();
+
+        $userid=$user->id;
+        $data=cart::where('user_id','=',$userid)->get();
+
+
+        foreach($data as $data)
+{
+    $order=new order;
+
+    $order->name=$data->name;
+
+    $order->phone=$data->phone;
+
+    $order->address=$data->address;
+
+
+
+    $order->product_name=$data->product_title;
+
+    $order->price=$data->price;
+
+    $order->quantity=$data->quantity;
+
+    $order->status='non receptionné et payé';
+
+    $order->save();
+
+
+    $cart_id=$data->id;
+
+    $cart=cart::find($cart_id);
+
+    $cart->delete();
+}
+
+        Session::flash('success', 'Paiement bien effectué !');
+
+        return back();
     }
 
 }

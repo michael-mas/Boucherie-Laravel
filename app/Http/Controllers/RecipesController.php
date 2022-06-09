@@ -50,7 +50,7 @@ class RecipesController extends Controller
             ->simplePaginate(60)
             ->withPath('/search?q=' . $q);
             $user=auth()->user();
-            $count=cart::where('phone',$user->phone)->count();
+            $count=cart::where('user_id',$user->id)->count();
         return view('recipes.index', [
             'recipes' => $recipes,
             'q' => $q
@@ -66,7 +66,7 @@ class RecipesController extends Controller
     public function create()
     {
         $user=auth()->user();
-        $count=cart::where('phone',$user->phone)->count();
+        $count=cart::where('user_id',$user->id)->count();
 
         return view('recipes.create',compact('count'));
     }
@@ -173,7 +173,7 @@ class RecipesController extends Controller
 
         $recipe = $query[0];
         $user=auth()->user();
-        $count=cart::where('phone',$user->phone)->count();
+        $count=cart::where('user_id',$user->id)->count();
         return view(
             'recipes.show',
             [
@@ -202,7 +202,7 @@ class RecipesController extends Controller
     public function edit($id)
     {
         $user=auth()->user();
-        $count=cart::where('phone',$user->phone)->count();
+        $count=cart::where('id',$user->id)->count();
         $recipe = Recipe::find($id);
 
         if ($recipe->user_id !== Auth::id()) {

@@ -17,9 +17,9 @@ class CheckoutController extends Controller
 
 
 
-        $count=cart::where('phone',$user->phone)->count();
+        $count=cart::where('user_id',$user->id)->count();
 
-        $countprice=cart::where('phone',$user->phone)->sum('price');
+        $countprice=cart::where('user_id',$user->id)->sum('price');
 
        // dd($countprice);
 

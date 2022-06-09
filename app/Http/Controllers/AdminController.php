@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Cart;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +23,7 @@ class AdminController extends Controller
 
             $user=auth()->user();
 
-            $count=cart::where('phone',$user->phone)->count();
+            $count=cart::where('id',$user->id)->count();
             return view('user.home',compact('data','count'));
         }
     }
@@ -71,7 +72,7 @@ class AdminController extends Controller
 
             $user=auth()->user();
 
-            $count=cart::where('phone',$user->phone)->count();
+            $count=cart::where('id',$user->id)->count();
             return view('user.home',compact('data','count'));
         }
     }
@@ -101,7 +102,7 @@ class AdminController extends Controller
 
             $user=auth()->user();
 
-            $count=cart::where('phone',$user->phone)->count();
+            $count=cart::where('id',$user->id)->count();
             return view('user.home',compact('data','count'));
         }
     }
@@ -154,7 +155,7 @@ class AdminController extends Controller
 
             $user=auth()->user();
 
-            $count=cart::where('phone',$user->phone)->count();
+            $count=cart::where('id',$user->id)->count();
             return view('user.home',compact('data','count'));
         }
     }
@@ -184,6 +185,38 @@ class AdminController extends Controller
         return redirect()->back()->with('message', 'Categorie supprimé avec succès');
     }
 
+    public function order(){
+        $usertype=Auth::user()->usertype;
+
+        if($usertype=='1'){
+
+        $order=order::all();
+        return view('admin.order', compact('order'));
+        }
+        else{
+            $data = product::paginate(3);
+
+            $user=auth()->user();
+
+            $count=cart::where('user_id',$user->id)->count();
+            return view('user.home',compact('data','count'));
+        }
+    }
+
+    public function delivered($id) {
+        
+        $order=order::find($id);
+
+
+
+        $order->status="délivré";
+
+        $order->save();
+
+        return redirect()->back();
+
+    }
+
     public function contact_me(){
         $usertype=Auth::user()->usertype;
 
@@ -195,9 +228,11 @@ class AdminController extends Controller
 
             $user=auth()->user();
 
-            $count=cart::where('phone',$user->phone)->count();
+            $count=cart::where('user_id',$user->id)->count();
             return view('user.home',compact('data','count'));
         }
     }
+
+
 
 }

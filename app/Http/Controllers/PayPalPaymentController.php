@@ -11,10 +11,10 @@ class PayPalPaymentController extends Controller
     {
         $user=auth()->user();
 
-        $count=cart::where('phone',$user->phone)->count();
-        $countprice=cart::where('phone',$user->phone)->sum('price');
-        $nameproduct=cart::where('phone',$user->phone)->pluck('product_title');
-        $quant=cart::where('phone',$user->phone)->sum('quantity');
+        $count=cart::where('user_id',$user->id)->count();
+        $countprice=cart::where('user_id',$user->id)->sum('price');
+        $nameproduct=cart::where('user_id',$user->id)->pluck('product_title');
+        $quant=cart::where('user_id',$user->id)->sum('quantity');
 //dd($nameproduct->first());
 
         $product = [];
@@ -56,7 +56,7 @@ class PayPalPaymentController extends Controller
 
         $user=auth()->user();
 
-        $count=cart::where('phone',$user->phone)->count();
+        $count=cart::where('user_id',$user->id)->count();
 
         if (in_array(strtoupper($response['ACK']), ['SUCCESS', 'SUCCESSWITHWARNING'])) {
             return view('checkout.succes',compact('count'));

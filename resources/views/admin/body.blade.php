@@ -61,7 +61,7 @@ a {
 }
 </style>
 
-<div class="main-panel">
+<div style="background-color: rgb(0, 0, 0)" class="main-panel">
    <h1 style="font-size:25px" class="text-center font-weight-bold mt-5 mb-4">Bienvenue chef !</h1>
    <div class="container">
     <h1 class="center mb-4">Voici votre gestionnaire des élèments de votre site et sa documentation</h1>
@@ -110,7 +110,7 @@ a {
     <article class="episode">
       <div class="episode__number">03</div>
       <div class="episode__content">
-        <div class="title">Utilisateurs</div>
+        <div class="title">Commandes</div>
         <div class="story">
           <p>En travaux</p>
           <p>En travaux</p>
@@ -121,12 +121,5 @@ a {
       </div>
     </article>
   </div>
-    <h3 class="center"><a href="https://www.linkedin.com/in/michaelmasdev/" target="_blank" rel="noopener noreferer">Tutoriel réalisé par Michael Mas</a></h3>
+    <h3 class="center mb-3"><a href="https://www.linkedin.com/in/michaelmasdev/" target="_blank" rel="noopener noreferer">Tutoriel réalisé par Michael Mas</a></h3>
     <!-- content-wrapper ends -->
-    <!-- partial:partials/_footer -->
-    <footer class="footer">
-      <div class="d-sm-flex justify-content-center justify-content-sm-between">
-        <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © M&M 2022</span>
-        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Designer : Michael Mas</span>
-      </div>
-    </footer>

@@ -117,8 +117,9 @@ height: 100vh !important;
                       @endforeach
                       <hr class="mt-2 mb-1">
                       <div class="row d-flex justify-content-end mr-2"> <span>Total: {{$sum}} €</span></div>
-                      <div class="row d-flex justify-content-center "> <button class="btn d-none btn-success mt-2">Confirmer commande</button>
+                      <div class="row d-flex justify-content-center "> <button class="btn btn-primary mt-3 mr-2">Payer à la boutique</button>
                         <a href="{{ route('make.payment') }}" class="btn btn-primary mt-3">Payer via Paypal</a>
+                        <a href="{{ route('user.stripe', $sum) }}" class="btn btn-primary mt-3 ml-2">Payer via Stripe</a>
                     </div>
 
 

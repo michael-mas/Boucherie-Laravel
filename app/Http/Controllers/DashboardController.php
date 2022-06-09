@@ -31,7 +31,7 @@ class DashboardController extends Controller
     {
         $user=auth()->user();
         $recipes = Recipe::where('user_id', $user->id)->simplePaginate(20);
-        $count=cart::where('phone',$user->phone)->count();
+        $count=cart::where('user_id',$user->id)->count();
 
 
         return view('dashboard.dashboard', compact('count'), [

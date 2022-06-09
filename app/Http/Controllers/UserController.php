@@ -17,7 +17,7 @@ class UserController extends Controller
 
     public function show(Request $request)
     {
-        $username = $request->name;
+        $name = $request->name;
         $user = User::where('name', "=", $name)->first();
 
         if (Auth::id()) {
@@ -26,7 +26,7 @@ class UserController extends Controller
 
         $recipes = Recipe::where('user_id', $user->id)->paginate(20);
 
-        return view('user', [
+        return view('dashboard.dashboard', [
             'name' => $user->name,
             'avatar' => $user->avatar,
             'bio' => $user->bio,
